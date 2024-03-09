@@ -38,8 +38,8 @@ const App = () => {
   };
 
   const handleSearch = () => {
-    setCurrentPage(1); // Reset page number on search
-    setWeatherData(null); // Clear previous weather data
+    setCurrentPage(1);
+    setWeatherData(null); 
   };
 
   return (
