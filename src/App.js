@@ -6,7 +6,7 @@ const App = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [forecastsPerPage, setForecastsPerPage] = useState(5);
   const [city, setCity] = useState('');
-  // enter city Califonia
+
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
@@ -37,58 +37,65 @@ const App = () => {
     setCity(event.target.value);
   };
 
-  return (
-    <div style={{ margin: '100px 300px 0px 300px' }}>
-      <div style={{ textAlign: 'center' }}>
-        <h2>Weather Forecast for {city}</h2>
-        <div>
-          <label htmlFor="city">Enter City Name:</label>
-          <input type="text" id="city" value={city} onChange={handleCityChange} />
-        </div><br />
-        {weatherData && (
-          <>
-            <table style={{ margin: 'auto', borderCollapse: 'collapse', border: '1px solid black' }}>
-              <thead>
-                <tr>
-                  <th style={{ border: '1px solid black', padding: '8px' }}>Date</th>
-                  <th style={{ border: '1px solid black', padding: '8px' }}>Temperature (Kelvin)</th>
-                  <th style={{ border: '1px solid black', padding: '8px' }}>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentForecasts.map((forecast, index) => (
-                  <tr key={index}>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{forecast.dt_txt}</td>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{forecast.main.temp}</td>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{forecast.weather[0].description}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+  const handleSearch = () => {
+    setCurrentPage(1); // Reset page number on search
+    setWeatherData(null); // Clear previous weather data
+  };
 
+  return (
+    <div >
+      <div style={{ justifyContent: 'center', display: 'flex', gap: '4px', }}>
+
+        <span style={{ color: 'orange' }}>Weather in your City</span>
+        <input type="text" id="city" value={city} onChange={handleCityChange} />
+        <button style={{ backgroundColor: 'orange', color: 'white' }} onClick={handleCityChange}>Search</button>
+      </div><br />
+      <div style={{ justifyContent: 'center', display: 'flex', gap: '8px', }}>
+
+
+        {weatherData ? (
+          <>
+            {currentForecasts.map((forecast, index) => (
+              <div key={index} style={{ marginBottom: '20px' }}>
+                <table style={{ margin: 'auto', borderCollapse: 'collapse', border: '1px solid black' }}>
+                  <thead>
+                    <tr>
+                      <th colSpan="2" style={{ border: '1px solid black', padding: '8px', backgroundColor: 'orange', color: 'black' }}>Date:{forecast.dt_txt}</th>
+                    </tr>
+                    <tr>
+                      <th colSpan="2" style={{ border: '1px solid black', padding: '8px' }}>Temperature</th>
+                    </tr>
+                    <tr>
+                      <th style={{ border: '1px solid black', padding: '8px' }}>Min </th>
+                      <th style={{ border: '1px solid black', padding: '8px' }}>Max </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>{forecast.main.temp_min}</td>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>{forecast.main.temp_max}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>Pressure</td>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>{forecast.main.pressure}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>Humidity</td>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>{forecast.main.humidity}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            ))}
 
             <br />
-            <div style={{ textAlign: 'right', marginRight: '300px' }}>
-              <span style={{ margin: '30px' }}>
-                <label htmlFor="forecastsPerPage">Forecasts per page:</label>
-                <select id="forecastsPerPage" onChange={handleForecastsPerPageChange} value={forecastsPerPage}>
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="15">15</option>
-                </select>
-              </span>
-              <span className="pagination">
-                {[...Array(Math.ceil(weatherData.list.length / forecastsPerPage)).keys()].map((pageNumber) => (
-                  <span key={pageNumber} className={currentPage === pageNumber + 1 ? 'active' : ''}>
-                    <button onClick={() => paginate(pageNumber + 1)}>{pageNumber + 1}</button>
-                  </span>
-                ))}
-              </span>
 
-            </div>
 
 
           </>
+        ) : (
+          <p >No data available</p>
         )}
       </div>
     </div>
