@@ -42,7 +42,7 @@ const App = () => {
       <div style={{ textAlign: 'center' }}>
         <h2>Weather Forecast for {city}</h2>
         <div>
-          <label htmlFor="city">Enter Country Name:</label>
+          <label htmlFor="city">Enter City Name:</label>
           <input type="text" id="city" value={city} onChange={handleCityChange} />
         </div><br />
         {weatherData && (
