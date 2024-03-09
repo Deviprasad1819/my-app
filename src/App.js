@@ -1,5 +1,7 @@
+// App.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './App.css';
 
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -39,63 +41,57 @@ const App = () => {
 
   const handleSearch = () => {
     setCurrentPage(1);
-    setWeatherData(null); 
+    setWeatherData(null);
   };
 
   return (
-    <div >
-      <div style={{ justifyContent: 'center', display: 'flex', gap: '4px', }}>
-
-        <span style={{ color: 'orange' }}>Weather in your City</span>
-        <input type="text" id="city" value={city} onChange={handleCityChange} />
-        <button style={{ backgroundColor: 'orange', color: 'white' }} onClick={handleCityChange}>Search</button>
-      </div><br />
-      <div style={{ justifyContent: 'center', display: 'flex', gap: '8px', }}>
-
-
+    <div className="container">
+      <div className="header">
+        <div className="city-input">
+          <span style={{ color: 'orange' }}>Enter City Name:</span>
+          <input type="text" id="city" value={city} onChange={handleCityChange} />
+          <button style={{ backgroundColor: 'orange', color: 'white' }} onClick={handleSearch}>Search</button>
+        </div>
+      </div>
+      <br />
+      <div className="weather-container">
         {weatherData ? (
           <>
             {currentForecasts.map((forecast, index) => (
-              <div key={index} style={{ marginBottom: '20px' }}>
-                <table style={{ margin: 'auto', borderCollapse: 'collapse', border: '1px solid black' }}>
+              <div key={index} className="forecast-card">
+                <table className="forecast-table">
                   <thead>
                     <tr>
-                      <th colSpan="2" style={{ border: '1px solid black', padding: '8px', backgroundColor: 'orange', color: 'black' }}>Date:{forecast.dt_txt}</th>
+                      <th colSpan="2" className="orange">Date: {forecast.dt_txt}</th>
                     </tr>
                     <tr>
-                      <th colSpan="2" style={{ border: '1px solid black', padding: '8px' }}>Temperature</th>
+                      <th colSpan="2">Temperature</th>
                     </tr>
                     <tr>
-                      <th style={{ border: '1px solid black', padding: '8px' }}>Min </th>
-                      <th style={{ border: '1px solid black', padding: '8px' }}>Max </th>
+                      <th>Min</th>
+                      <th>Max</th>
                     </tr>
                   </thead>
                   <tbody>
-
                     <tr>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>{forecast.main.temp_min}</td>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>{forecast.main.temp_max}</td>
+                      <td>{forecast.main.temp_min}</td>
+                      <td>{forecast.main.temp_max}</td>
                     </tr>
                     <tr>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>Pressure</td>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>{forecast.main.pressure}</td>
+                      <td>Pressure</td>
+                      <td>{forecast.main.pressure}</td>
                     </tr>
                     <tr>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>Humidity</td>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>{forecast.main.humidity}</td>
+                      <td>Humidity</td>
+                      <td>{forecast.main.humidity}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             ))}
-
-            <br />
-
-
-
           </>
         ) : (
-          <p >No data available</p>
+          <p>No data available</p>
         )}
       </div>
     </div>
